@@ -315,7 +315,7 @@ mod tests {
                 let foo_test = fo<|>o();
             }
         "#,
-            &["{unknown}"],
+            &["?"],
         );
     }
 

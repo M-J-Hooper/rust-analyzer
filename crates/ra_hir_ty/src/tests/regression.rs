@@ -37,7 +37,7 @@ fn test(x: X) {
     [20; 21) 'x': X
     [26; 47) '{     ...eld; }': ()
     [32; 33) 'x': X
-    [32; 44) 'x.some_field': {unknown}
+    [32; 44) 'x.some_field': ?
     "###
     );
 }
@@ -56,12 +56,12 @@ fn test() {
 "#),
         @r###"
     [11; 89) '{     ...   } }': ()
-    [17; 21) 'X {}': {unknown}
+    [17; 21) 'X {}': ?
     [27; 87) 'match ...     }': ()
-    [33; 34) 'x': {unknown}
-    [45; 52) 'A::B {}': {unknown}
+    [33; 34) 'x': ?
+    [45; 52) 'A::B {}': ?
     [56; 58) '()': ()
-    [68; 74) 'A::Y()': {unknown}
+    [68; 74) 'A::Y()': ?
     [78; 80) '()': ()
     "###
     );
@@ -100,12 +100,12 @@ fn test() {
 "#),
         @r###"
     [11; 48) '{     ...&y]; }': ()
-    [21; 22) 'y': &{unknown}
-    [25; 32) 'unknown': &{unknown}
-    [38; 45) '[y, &y]': [&&{unknown}; _]
-    [39; 40) 'y': &{unknown}
-    [42; 44) '&y': &&{unknown}
-    [43; 44) 'y': &{unknown}
+    [21; 22) 'y': &?
+    [25; 32) 'unknown': &?
+    [38; 45) '[y, &y]': [&&?; _]
+    [39; 40) 'y': &?
+    [42; 44) '&y': &&?
+    [43; 44) 'y': &?
     "###
     );
 }
@@ -124,19 +124,19 @@ fn test() {
 "#),
         @r###"
     [11; 80) '{     ...x)]; }': ()
-    [21; 22) 'x': &&{unknown}
-    [25; 32) 'unknown': &&{unknown}
-    [42; 43) 'y': &&{unknown}
-    [46; 53) 'unknown': &&{unknown}
-    [59; 77) '[(x, y..., &x)]': [(&&&{unknown}, &&&{unknown}); _]
-    [60; 66) '(x, y)': (&&&{unknown}, &&&{unknown})
-    [61; 62) 'x': &&{unknown}
-    [64; 65) 'y': &&{unknown}
-    [68; 76) '(&y, &x)': (&&&{unknown}, &&&{unknown})
-    [69; 71) '&y': &&&{unknown}
-    [70; 71) 'y': &&{unknown}
-    [73; 75) '&x': &&&{unknown}
-    [74; 75) 'x': &&{unknown}
+    [21; 22) 'x': &&?
+    [25; 32) 'unknown': &&?
+    [42; 43) 'y': &&?
+    [46; 53) 'unknown': &&?
+    [59; 77) '[(x, y..., &x)]': [(&&&?, &&&?); _]
+    [60; 66) '(x, y)': (&&&?, &&&?)
+    [61; 62) 'x': &&?
+    [64; 65) 'y': &&?
+    [68; 76) '(&y, &x)': (&&&?, &&&?)
+    [69; 71) '&y': &&&?
+    [70; 71) 'y': &&?
+    [73; 75) '&x': &&&?
+    [74; 75) 'x': &&?
     "###
     );
 }
@@ -160,9 +160,9 @@ fn write() {
         @r###"
     [54; 139) '{     ...   } }': ()
     [60; 137) 'match ...     }': ()
-    [66; 83) 'someth...nknown': Maybe<{unknown}>
-    [94; 124) 'Maybe:...thing)': Maybe<{unknown}>
-    [106; 123) 'ref mu...ething': &mut {unknown}
+    [66; 83) 'someth...nknown': Maybe<?>
+    [94; 124) 'Maybe:...thing)': Maybe<?>
+    [106; 123) 'ref mu...ething': &mut ?
     [128; 130) '()': ()
     "###
     );
@@ -204,10 +204,10 @@ pub fn compute() {
         @r###"
     [18; 108) '{     ...   } }': ()
     [24; 106) 'match ...     }': ()
-    [30; 37) 'nope!()': {unknown}
-    [48; 94) 'SizeSk...tail }': {unknown}
-    [82; 86) 'true': {unknown}
-    [88; 92) 'tail': {unknown}
+    [30; 37) 'nope!()': ?
+    [48; 94) 'SizeSk...tail }': ?
+    [82; 86) 'true': ?
+    [88; 92) 'tail': ?
     [98; 100) '{}': ()
     "###
     );
@@ -227,11 +227,11 @@ pub fn primitive_type() {
         @r###"
     [25; 106) '{     ...   } }': ()
     [31; 104) 'match ...     }': ()
-    [37; 42) '*self': {unknown}
-    [38; 42) 'self': {unknown}
-    [53; 91) 'Borrow...), ..}': {unknown}
-    [74; 86) 'Primitive(p)': {unknown}
-    [84; 85) 'p': {unknown}
+    [37; 42) '*self': ?
+    [38; 42) 'self': ?
+    [53; 91) 'Borrow...), ..}': ?
+    [74; 86) 'Primitive(p)': ?
+    [84; 85) 'p': ?
     [95; 97) '{}': ()
     "###
     );
@@ -261,27 +261,27 @@ fn extra_compiler_flags() {
         @r###"
     [27; 323) '{     ...   } }': ()
     [33; 321) 'for co...     }': ()
-    [37; 44) 'content': &{unknown}
-    [48; 61) 'doesnt_matter': {unknown}
+    [37; 44) 'content': &?
+    [48; 61) 'doesnt_matter': ?
     [62; 321) '{     ...     }': ()
-    [76; 80) 'name': &&{unknown}
-    [83; 167) 'if doe...     }': &&{unknown}
+    [76; 80) 'name': &&?
+    [83; 167) 'if doe...     }': &&?
     [86; 99) 'doesnt_matter': bool
-    [100; 129) '{     ...     }': &&{unknown}
-    [114; 119) 'first': &&{unknown}
-    [135; 167) '{     ...     }': &&{unknown}
-    [149; 157) '&content': &&{unknown}
-    [150; 157) 'content': &{unknown}
-    [182; 189) 'content': &{unknown}
-    [192; 314) 'if ICE...     }': &{unknown}
-    [195; 232) 'ICE_RE..._VALUE': {unknown}
+    [100; 129) '{     ...     }': &&?
+    [114; 119) 'first': &&?
+    [135; 167) '{     ...     }': &&?
+    [149; 157) '&content': &&?
+    [150; 157) 'content': &?
+    [182; 189) 'content': &?
+    [192; 314) 'if ICE...     }': &?
+    [195; 232) 'ICE_RE..._VALUE': ?
     [195; 248) 'ICE_RE...&name)': bool
-    [242; 247) '&name': &&&{unknown}
-    [243; 247) 'name': &&{unknown}
-    [249; 277) '{     ...     }': &&{unknown}
-    [263; 267) 'name': &&{unknown}
-    [283; 314) '{     ...     }': &{unknown}
-    [297; 304) 'content': &{unknown}
+    [242; 247) '&name': &&&?
+    [243; 247) 'name': &&?
+    [249; 277) '{     ...     }': &&?
+    [263; 267) 'name': &&?
+    [283; 314) '{     ...     }': &?
+    [297; 304) 'content': &?
     "###
     );
 }
@@ -346,8 +346,8 @@ pub fn main_loop() {
     @r###"
     [144; 146) '{}': ()
     [169; 198) '{     ...t(); }': ()
-    [175; 193) 'FxHash...efault': fn default<{unknown}, FxHasher>() -> HashSet<{unknown}, FxHasher>
-    [175; 195) 'FxHash...ault()': HashSet<{unknown}, FxHasher>
+    [175; 193) 'FxHash...efault': fn default<?, FxHasher>() -> HashSet<?, FxHasher>
+    [175; 195) 'FxHash...ault()': HashSet<?, FxHasher>
     "###
     );
 }
@@ -375,7 +375,7 @@ fn issue_2669() {
         ),
         @r###"
     [147; 262) '{     ...     }': ()
-    [161; 164) 'end': fn end<{unknown}>() -> ()
+    [161; 164) 'end': fn end<?>() -> ()
     [161; 166) 'end()': ()
     [199; 252) '{     ...     }': ()
     [221; 223) '_x': !
@@ -396,7 +396,7 @@ fn test() {
 "#),
         @r###"
     [26; 53) '{     ...oo() }': ()
-    [32; 49) '<Trait...>::foo': {unknown}
+    [32; 49) '<Trait...>::foo': ?
     [32; 51) '<Trait...:foo()': ()
     "###
     );
@@ -451,7 +451,7 @@ pub mod str {
     );
 
     // should be Option<char>, but currently not because of Chalk ambiguity problem
-    assert_eq!("(Option<{unknown}>, Option<{unknown}>)", super::type_at_pos(&db, pos));
+    assert_eq!("(Option<?>, Option<?>)", super::type_at_pos(&db, pos));
 }
 
 #[test]

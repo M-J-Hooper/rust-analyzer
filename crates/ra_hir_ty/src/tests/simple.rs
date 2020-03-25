@@ -485,13 +485,13 @@ fn test(x: SomeType) {
     [213; 217) '3.14': f64
     [223; 225) '!3': i32
     [224; 225) '3': i32
-    [231; 233) '-x': {unknown}
+    [231; 233) '-x': ?
     [232; 233) 'x': SomeType
-    [239; 241) '!x': {unknown}
+    [239; 241) '!x': ?
     [240; 241) 'x': SomeType
-    [247; 255) '-"hello"': {unknown}
+    [247; 255) '-"hello"': ?
     [248; 255) '"hello"': &str
-    [261; 269) '!"hello"': {unknown}
+    [261; 269) '!"hello"': ?
     [262; 269) '"hello"': &str
     "###
     );
@@ -519,18 +519,18 @@ fn test() -> &mut &f64 {
     [22; 24) '{}': ()
     [78; 231) '{     ...t &c }': &mut &f64
     [88; 89) 'a': u32
-    [92; 108) 'unknow...nction': {unknown}
+    [92; 108) 'unknow...nction': ?
     [92; 110) 'unknow...tion()': u32
     [116; 125) 'takes_u32': fn takes_u32(u32) -> ()
     [116; 128) 'takes_u32(a)': ()
     [126; 127) 'a': u32
     [138; 139) 'b': i32
-    [142; 158) 'unknow...nction': {unknown}
+    [142; 158) 'unknow...nction': ?
     [142; 160) 'unknow...tion()': i32
     [166; 184) 'S { i3...d: b }': S
     [181; 182) 'b': i32
     [194; 195) 'c': f64
-    [198; 214) 'unknow...nction': {unknown}
+    [198; 214) 'unknow...nction': ?
     [198; 216) 'unknow...tion()': f64
     [222; 229) '&mut &c': &mut &f64
     [227; 229) '&c': &f64
@@ -635,8 +635,8 @@ fn test() -> bool {
     [232; 238) 'z || y': bool
     [237; 238) 'y': bool
     [242; 243) '5': i32
-    [253; 254) 'd': {unknown}
-    [257; 258) 'b': {unknown}
+    [253; 254) 'd': ?
+    [257; 258) 'b': ?
     [268; 269) 'g': ()
     [272; 283) 'minus_forty': isize
     [272; 288) 'minus_...y ^= i': ()
@@ -1222,7 +1222,7 @@ fn test() {
     [123; 135) 'Option::Some': Some<&str>(&str) -> Option<&str>
     [123; 140) 'Option...e("x")': Option<&str>
     [136; 139) '"x"': &str
-    [146; 150) 'None': Option<{unknown}>
+    [146; 150) 'None': Option<?>
     [160; 161) 'x': Option<i64>
     [177; 181) 'None': Option<i64>
     "###
@@ -1507,7 +1507,7 @@ type Bar = A<Bar>;
 fn test(x: Foo) {}
 "#),
         @r###"
-    [59; 60) 'x': {unknown}
+    [59; 60) 'x': ?
     [67; 69) '{}': ()
     "###
     )

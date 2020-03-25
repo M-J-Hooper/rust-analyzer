@@ -521,7 +521,7 @@ mod tests {
                 delete: [25; 25),
                 insert: "self",
                 kind: Binding,
-                detail: "&{unknown}",
+                detail: "&?",
             },
         ]
         "###

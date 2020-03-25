@@ -151,7 +151,7 @@ fn test(a: Option) {
 }
 "#,
     );
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]

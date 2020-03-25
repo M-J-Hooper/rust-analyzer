@@ -321,7 +321,7 @@ impl HirDisplay for Ty {
                 };
                 write_bounds_like_dyn_trait(&predicates, f)?;
             }
-            Ty::Unknown => write!(f, "{{unknown}}")?,
+            Ty::Unknown => write!(f, "?")?,
             Ty::Infer(..) => write!(f, "_")?,
         }
         Ok(())

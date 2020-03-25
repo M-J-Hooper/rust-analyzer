@@ -438,8 +438,8 @@ impl<T> Trait<i8, i16, T> for S2 {}
 fn test() {
     S1.method1(); // u8, u16, u32
     S1.method2(); // u32, u16, u8
-    S2.method1(); // i8, i16, {unknown}
-    S2.method2(); // {unknown}, i16, i8
+    S2.method1(); // i8, i16, ?
+    S2.method2(); // ?, i16, i8
 }
 "#),
         @r###"
@@ -451,9 +451,9 @@ fn test() {
     [250; 252) 'S1': S1
     [250; 262) 'S1.method2()': (u32, u16, u8)
     [284; 286) 'S2': S2
-    [284; 296) 'S2.method1()': (i8, i16, {unknown})
+    [284; 296) 'S2.method1()': (i8, i16, ?)
     [324; 326) 'S2': S2
-    [324; 336) 'S2.method2()': ({unknown}, i16, i8)
+    [324; 336) 'S2.method2()': (?, i16, i8)
     "###
     );
 }
@@ -912,7 +912,7 @@ fn test() { (&S).foo()<|>; }
     // This is also to make sure that we don't resolve to the foo method just
     // because that's the only method named foo we can find, which would make
     // the below tests not work
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]
@@ -928,7 +928,7 @@ impl<T: Clone> Trait for T {}
 fn test() { (&S).foo()<|>; }
 "#,
     );
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]
@@ -961,7 +961,7 @@ impl<T, U> Into<U> for T where U: From<T> {}
 fn test() { S2.into()<|>; }
 "#,
     );
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]
@@ -978,7 +978,7 @@ impl<T, U: From<T>> Into<U> for T {}
 fn test() { S2.into()<|>; }
 "#,
     );
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]
@@ -1045,7 +1045,7 @@ where
 }
 "#,
     );
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]

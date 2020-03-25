@@ -368,12 +368,12 @@ fn test<T: Iterable>() {
     [108; 261) '{     ...ter; }': ()
     [118; 119) 'x': u32
     [145; 146) '1': u32
-    [156; 157) 'y': {unknown}
-    [183; 192) 'no_matter': {unknown}
-    [202; 203) 'z': {unknown}
-    [215; 224) 'no_matter': {unknown}
-    [234; 235) 'a': {unknown}
-    [249; 258) 'no_matter': {unknown}
+    [156; 157) 'y': ?
+    [183; 192) 'no_matter': ?
+    [202; 203) 'z': ?
+    [215; 224) 'no_matter': ?
+    [234; 235) 'a': ?
+    [249; 258) 'no_matter': ?
     "###
     );
 }
@@ -433,8 +433,8 @@ fn test<T: Iterable<Item=u32>>() {
 "#),
         @r###"
     [67; 100) '{     ...own; }': ()
-    [77; 78) 'y': {unknown}
-    [90; 97) 'unknown': {unknown}
+    [77; 78) 'y': ?
+    [90; 97) 'unknown': ?
     "###
     );
 }
@@ -525,9 +525,9 @@ fn indexing_arrays() {
         infer("fn main() { &mut [9][2]; }"),
         @r###"
     [10; 26) '{ &mut...[2]; }': ()
-    [12; 23) '&mut [9][2]': &mut {unknown}
+    [12; 23) '&mut [9][2]': &mut ?
     [17; 20) '[9]': [i32; _]
-    [17; 23) '[9][2]': {unknown}
+    [17; 23) '[9][2]': ?
     [18; 19) '9': i32
     [21; 22) '2': i32
     "###
@@ -676,7 +676,7 @@ fn test(s: S) {
 }
 "#,
     );
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]
@@ -825,7 +825,7 @@ impl<T> Trait for T where T: Clone {}
 fn test<T>(t: T) { t.foo()<|>; }
 "#,
     );
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]
@@ -853,7 +853,7 @@ impl Trait for S {}
 fn test<T>(t: T) { t.foo()<|>; }
 "#,
     );
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]
@@ -920,7 +920,7 @@ fn test<T: ApplyL>(t: T) {
     // need to add a rule like Normalize(<T as ApplyL>::Out -> ApplyL::Out<T>)
     // to the trait env ourselves here; probably Chalk can't do this by itself.
     // assert_eq!(t, "ApplyL::Out<[missing name]>");
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]
@@ -1019,23 +1019,23 @@ fn test() {
     [222; 229) 'loop {}': !
     [227; 229) '{}': ()
     [301; 510) '{     ... i32 }': ()
-    [307; 315) 'Foo::bar': fn bar<{unknown}, {unknown}>(S) -> {unknown}
-    [307; 318) 'Foo::bar(S)': {unknown}
+    [307; 315) 'Foo::bar': fn bar<?, ?>(S) -> ?
+    [307; 318) 'Foo::bar(S)': ?
     [316; 317) 'S': S
-    [324; 339) '<F as Foo>::bar': fn bar<F, {unknown}>(S) -> {unknown}
-    [324; 342) '<F as ...bar(S)': {unknown}
+    [324; 339) '<F as Foo>::bar': fn bar<F, ?>(S) -> ?
+    [324; 342) '<F as ...bar(S)': ?
     [340; 341) 'S': S
-    [348; 354) 'F::bar': fn bar<F, {unknown}>(S) -> {unknown}
-    [348; 357) 'F::bar(S)': {unknown}
+    [348; 354) 'F::bar': fn bar<F, ?>(S) -> ?
+    [348; 357) 'F::bar(S)': ?
     [355; 356) 'S': S
-    [363; 378) 'Foo::bar::<u32>': fn bar<{unknown}, u32>(S) -> u32
+    [363; 378) 'Foo::bar::<u32>': fn bar<?, u32>(S) -> u32
     [363; 381) 'Foo::b...32>(S)': u32
     [379; 380) 'S': S
     [387; 409) '<F as ...:<u32>': fn bar<F, u32>(S) -> u32
     [387; 412) '<F as ...32>(S)': u32
     [410; 411) 'S': S
-    [419; 422) 'foo': fn foo<{unknown}>(S) -> {unknown}
-    [419; 425) 'foo(S)': {unknown}
+    [419; 422) 'foo': fn foo<?>(S) -> ?
+    [419; 425) 'foo(S)': ?
     [423; 424) 'S': S
     [431; 441) 'foo::<u32>': fn foo<u32>(S) -> u32
     [431; 444) 'foo::<u32>(S)': u32
@@ -1073,11 +1073,11 @@ fn test() {
     [121; 128) 'loop {}': !
     [126; 128) '{}': ()
     [144; 284) '{     ...ored }': ()
-    [150; 151) 'F': F<{unknown}>
-    [150; 158) 'F.foo(S)': ({unknown}, {unknown})
+    [150; 151) 'F': F<?>
+    [150; 158) 'F.foo(S)': (?, ?)
     [156; 157) 'S': S
     [164; 172) 'F::<u32>': F<u32>
-    [164; 179) 'F::<u32>.foo(S)': (u32, {unknown})
+    [164; 179) 'F::<u32>.foo(S)': (u32, ?)
     [177; 178) 'S': S
     [185; 193) 'F::<u32>': F<u32>
     [185; 207) 'F::<u3...32>(S)': (u32, i32)
@@ -1329,16 +1329,16 @@ fn test<T: Trait<Type = u32>>(x: T, y: impl Trait<Type = i64>) {
     [263; 264) 'y': impl Trait<Type = i64>
     [290; 398) '{     ...r>); }': ()
     [296; 299) 'get': fn get<T>(T) -> <T as Trait>::Type
-    [296; 302) 'get(x)': {unknown}
+    [296; 302) 'get(x)': ?
     [300; 301) 'x': T
-    [308; 312) 'get2': fn get2<{unknown}, T>(T) -> {unknown}
-    [308; 315) 'get2(x)': {unknown}
+    [308; 312) 'get2': fn get2<?, T>(T) -> ?
+    [308; 315) 'get2(x)': ?
     [313; 314) 'x': T
     [321; 324) 'get': fn get<impl Trait<Type = i64>>(impl Trait<Type = i64>) -> <impl Trait<Type = i64> as Trait>::Type
-    [321; 327) 'get(y)': {unknown}
+    [321; 327) 'get(y)': ?
     [325; 326) 'y': impl Trait<Type = i64>
-    [333; 337) 'get2': fn get2<{unknown}, impl Trait<Type = i64>>(impl Trait<Type = i64>) -> {unknown}
-    [333; 340) 'get2(y)': {unknown}
+    [333; 337) 'get2': fn get2<?, impl Trait<Type = i64>>(impl Trait<Type = i64>) -> ?
+    [333; 340) 'get2(y)': ?
     [338; 339) 'y': impl Trait<Type = i64>
     [346; 349) 'get': fn get<S<u64>>(S<u64>) -> <S<u64> as Trait>::Type
     [346; 357) 'get(set(S))': u64
@@ -1397,7 +1397,7 @@ mod iter {
 }
 "#,
     );
-    assert_eq!("{unknown}", type_at_pos(&db, pos));
+    assert_eq!("?", type_at_pos(&db, pos));
 }
 
 #[test]
@@ -1422,7 +1422,7 @@ fn test<T: Trait1<Type = u32>>(x: T) {
     [164; 165) 'x': T
     [170; 186) '{     ...o(); }': ()
     [176; 177) 'x': T
-    [176; 183) 'x.foo()': {unknown}
+    [176; 183) 'x.foo()': ?
     "###
     );
 }
@@ -1519,7 +1519,7 @@ fn test<T: A>(x: T) {
     [44; 45) 'x': T
     [50; 66) '{     ...o(); }': ()
     [56; 57) 'x': T
-    [56; 63) 'x.foo()': {unknown}
+    [56; 63) 'x.foo()': ?
     "###
     );
 }
@@ -1578,7 +1578,7 @@ fn test<F: FnOnce(u32, u64) -> u128>(f: F) {
     [150; 151) 'f': F
     [156; 184) '{     ...2)); }': ()
     [162; 163) 'f': F
-    [162; 181) 'f.call...1, 2))': {unknown}
+    [162; 181) 'f.call...1, 2))': ?
     [174; 180) '(1, 2)': (u32, u64)
     [175; 176) '1': u32
     [178; 179) '2': u64
@@ -1657,7 +1657,7 @@ fn test<F: FnOnce(u32) -> u64>(f: F) {
     [73; 74) 'f': F
     [79; 155) '{     ...+ v; }': ()
     [85; 86) 'f': F
-    [85; 89) 'f(1)': {unknown}
+    [85; 89) 'f(1)': ?
     [87; 88) '1': i32
     [99; 100) 'g': |u64| -> i32
     [103; 112) '|v| v + 1': |u64| -> i32
@@ -1829,7 +1829,7 @@ impl Trait for S2 {
 "#,
     ), @r###"
     [54; 58) 'self': &Self
-    [60; 61) 'x': {unknown}
+    [60; 61) 'x': ?
     [140; 144) 'self': &S
     [146; 147) 'x': u32
     [161; 175) '{ let y = x; }': ()
@@ -1882,7 +1882,7 @@ fn test() {
 }
 "#,
     );
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]
@@ -1902,7 +1902,7 @@ fn test<T: Trait>() where T: Trait2<T::Item> {
 "#,
     );
     // this is a legitimate cycle
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]
@@ -1920,7 +1920,7 @@ fn test<T, U>() where T: Trait<U::Item>, U: Trait<T::Item> {
 "#,
     );
     // this is a legitimate cycle
-    assert_eq!(t, "{unknown}");
+    assert_eq!(t, "?");
 }
 
 #[test]
@@ -1956,7 +1956,7 @@ fn test() -> impl Trait<i32> {
     [172; 183) '{ loop {} }': T
     [174; 181) 'loop {}': !
     [179; 181) '{}': ()
-    [214; 310) '{     ...t()) }': S<{unknown}>
+    [214; 310) '{     ...t()) }': S<?>
     [224; 226) 's1': S<u32>
     [229; 230) 'S': S<u32>(u32) -> S<u32>
     [229; 241) 'S(default())': S<u32>
@@ -1972,10 +1972,10 @@ fn test() -> impl Trait<i32> {
     [277; 289) 'S(default())': S<i32>
     [279; 286) 'default': fn default<i32>() -> i32
     [279; 288) 'default()': i32
-    [296; 297) 'S': S<{unknown}>({unknown}) -> S<{unknown}>
-    [296; 308) 'S(default())': S<{unknown}>
-    [298; 305) 'default': fn default<{unknown}>() -> {unknown}
-    [298; 307) 'default()': {unknown}
+    [296; 297) 'S': S<?>(?) -> S<?>
+    [296; 308) 'S(default())': S<?>
+    [298; 305) 'default': fn default<?>() -> ?
+    [298; 307) 'default()': ?
     "###
     );
 }

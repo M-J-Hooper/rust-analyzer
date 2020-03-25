@@ -40,7 +40,7 @@ impl S {
 }
 "#,
     );
-    assert_eq!("(i32, {unknown}, i32, {unknown})", type_at_pos(&db, pos));
+    assert_eq!("(i32, ?, i32, ?)", type_at_pos(&db, pos));
 }
 
 #[test]
@@ -63,9 +63,9 @@ fn main() {
 "#),
         @r###"
     ![0; 17) '{Foo(v...,2,])}': Foo
-    ![1; 4) 'Foo': Foo({unknown}) -> Foo
+    ![1; 4) 'Foo': Foo(?) -> Foo
     ![1; 16) 'Foo(vec![1,2,])': Foo
-    ![5; 15) 'vec![1,2,]': {unknown}
+    ![5; 15) 'vec![1,2,]': ?
     [156; 182) '{     ...,2); }': ()
     [166; 167) 'x': Foo
     "###
@@ -96,13 +96,13 @@ fn main() {
 "#),
         @r###"
     ![0; 17) '{Foo(v...,2,])}': Foo
-    ![1; 4) 'Foo': Foo({unknown}) -> Foo
+    ![1; 4) 'Foo': Foo(?) -> Foo
     ![1; 16) 'Foo(vec![1,2,])': Foo
-    ![5; 15) 'vec![1,2,]': {unknown}
+    ![5; 15) 'vec![1,2,]': ?
     [195; 251) '{     ...,2); }': ()
     [205; 206) 'x': Foo
-    [228; 229) 'y': {unknown}
-    [232; 248) 'crate:...!(1,2)': {unknown}
+    [228; 229) 'y': ?
+    [232; 248) 'crate:...!(1,2)': ?
     "###
     );
 }
@@ -193,9 +193,9 @@ fn spam() {
     ![0; 6) '1isize': isize
     ![0; 6) '1isize': isize
     [54; 457) '{     ...!(); }': !
-    [88; 109) 'spam!(...am!())': {unknown}
+    [88; 109) 'spam!(...am!())': ?
     [115; 134) 'for _ ...!() {}': ()
-    [119; 120) '_': {unknown}
+    [119; 120) '_': ?
     [132; 134) '{}': ()
     [139; 149) '|| spam!()': || -> isize
     [155; 171) 'while ...!() {}': ()
@@ -204,13 +204,13 @@ fn spam() {
     [195; 209) 'return spam!()': !
     [215; 269) 'match ...     }': isize
     [239; 240) '_': isize
-    [274; 290) 'spam!(...am!())': {unknown}
-    [296; 318) 'Spam {...m!() }': {unknown}
-    [324; 340) 'spam!(...am!()]': {unknown}
+    [274; 290) 'spam!(...am!())': ?
+    [296; 318) 'Spam {...m!() }': ?
+    [324; 340) 'spam!(...am!()]': ?
     [365; 381) 'spam!(... usize': usize
     [387; 395) '&spam!()': &isize
     [401; 409) '-spam!()': isize
-    [415; 431) 'spam!(...pam!()': {unknown}
+    [415; 431) 'spam!(...pam!()': ?
     [437; 454) 'spam!(...pam!()': isize
     "###
     );
@@ -376,7 +376,7 @@ fn main() {
         @r###"
         ![0; 6) '1usize': usize
         [11; 90) '{     ...!(); }': ()
-        [17; 66) 'macro_...     }': {unknown}
+        [17; 66) 'macro_...     }': ?
         [75; 77) '_a': usize
     "###
     );
@@ -527,7 +527,7 @@ fn main() {
 fn bar() -> u32 {0}
 "#,
     );
-    assert_eq!("{unknown}", type_at_pos(&db, pos));
+    assert_eq!("?", type_at_pos(&db, pos));
 }
 
 #[test]
@@ -637,5 +637,5 @@ mod clone {
 }
 "#,
     );
-    assert_eq!("(Wrapper<S>, {unknown})", type_at_pos(&db, pos));
+    assert_eq!("(Wrapper<S>, ?)", type_at_pos(&db, pos));
 }
